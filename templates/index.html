@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NLP Microservice</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #nlpForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #textInput {
+            width: 100%;
+            resize: vertical;
+        }
+
+        button {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #resultBox {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>NLP Microservice</h1>
+    <form id="nlpForm">
+        <label for="textInput">Enter Text:</label>
+        <textarea id="textInput" name="text" rows="4" cols="50"></textarea>
+        <button type="button" onclick="tokenize()">Tokenize</button>
+        <button type="button" onclick="sentiment()">Sentiment Analysis</button>
+        <button type="button" onclick="ner()">Named Entity Recognition</button>
+        <button type="button" onclick="pos()">Part of Speech Tagging</button>
+    </form>
+    
+    <!-- Result box to display the output -->
+    <div id="resultBox"></div>
+
+    <script>
+        function makeRequest(endpoint) {
+            const text = document.getElementById('textInput').value;
+            fetch(`http://localhost:5000/${endpoint}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({text: text})
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('resultBox').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                scrollToTop();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function tokenize() {
+            makeRequest('tokenize');
+        }
+
+        function sentiment() {
+            makeRequest('sentiment');
+        }
+
+        function ner() {
+            makeRequest('ner');
+        }
+
+        function pos() {
+            makeRequest('pos');
+        }
+    </script>
+</body>
+</html>
