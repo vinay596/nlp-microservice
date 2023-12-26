@@ -39,4 +39,4 @@ Open the command prompt and execute the following commands:
 pip install flask
 pip install flask_cors
 pip install textblob
-# Add any other dependencies mentioned in requirements.txt
+
