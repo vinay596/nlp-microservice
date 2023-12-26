@@ -2,7 +2,15 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from textblob import TextBlob
 import spacy
-
+negative_words = set([
+    "not", "no", "never", "none", "nowhere", "nothing", "noway", "neither", "nor",
+    "hardly", "barely", "scarcely", "rarely", "few", "little", "lack", "absence",
+    "avoid", "refuse", "reject", "fail", "error", "mistake", "fault", "flaw",
+    "problem", "issue", "trouble", "challenge", "difficult", "complicated", "hate",
+    "dislike", "disgust", "angry", "annoy", "upset", "offend", "insult", "hurt",
+    "harm", "damage", "destroy", "ruined", "worst", "terrible", "horrible", "awful",
+    "disaster", "frustrate"
+])
 app = Flask(__name__)
 CORS(app)
 nlp = spacy.blank("en")
@@ -32,7 +40,11 @@ def analyze_sentiment(text):
     elif sentiment_polarity < 0:
         sentiment = 'negative'
     else:
-        sentiment = 'neutral'
+        # Check for specific negative words
+        if any(word in text.lower() for word in negative_words):
+            sentiment = 'negative'
+        else:
+            sentiment = 'neutral'
 
     return sentiment, sentiment_polarity, sentiment_subjectivity
 
