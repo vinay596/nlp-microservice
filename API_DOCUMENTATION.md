@@ -4,9 +4,7 @@ Introduction :
 
 The NLP Microservice provides various natural language processing (NLP) functionalities through RESTful APIs. The available functionalities include text tokenization, sentiment analysis, named entity recognition, and part-of-speech tagging.
 
-
-Base URL --> Performs Part of Speech (POS) tagging on the provided text.
-
+Base URL --> The base URL for the API is `http://localhost:5000`.
 
 Endpoints : 
 
@@ -102,7 +100,7 @@ Example:
 }
 
 
---?> Error Handling : 
+--> Error Handling : 
      In case of an error, the API will return an appropriate HTTP status code along with a JSON object containing details about the error.
 
 
