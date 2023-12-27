@@ -5,7 +5,7 @@ import spacy
 
 app = Flask(__name__)
 CORS(app)
-nlp = spacy.blank("en")
+nlp = spacy.load("en_core_web_sm")
 
 @app.route('/')
 def home():
