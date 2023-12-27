@@ -6,13 +6,15 @@
     <title>NLP Microservice</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
         }
 
         h1 {
@@ -20,20 +22,42 @@
         }
 
         #nlpForm {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
+            max-width: 600px;
+            width: 100%;
+            background-color: #fff;
+            padding: 70px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
 
         #textInput {
             width: 100%;
+            padding: 10px;
+            margin-right : 30px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
             resize: vertical;
         }
 
         button {
+            background-color: #4caf50;
+            margin-right : 10px;
+            color: #fff;
+            border: none;
             padding: 10px;
             cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
         }
 
         #resultBox {
@@ -41,7 +65,9 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            border: 2px solid #ccc;
             width: 100%;
+            white-space: pre-wrap;
         }
     </style>
 </head>
@@ -49,13 +75,13 @@
     <h1>NLP Microservice</h1>
     <form id="nlpForm">
         <label for="textInput">Enter Text:</label>
-        <textarea id="textInput" name="text" rows="4" cols="50"></textarea>
-        <button type="button" onclick="tokenize()">Tokenize</button>
-        <button type="button" onclick="sentiment()">Sentiment Analysis</button>
-        <button type="button" onclick="ner()">Named Entity Recognition</button>
-        <button type="button" onclick="pos()">Part of Speech Tagging</button>
+        <textarea id="textInput" name="text" rows="4" placeholder="Type your text here..."></textarea>
+        <button type="button" onclick="makeRequest('tokenize')">Tokenize</button>
+        <button type="button" onclick="makeRequest('sentiment')">Sentiment Analysis</button>
+        <button type="button" onclick="makeRequest('ner')">Named Entity Recognition</button>
+        <button type="button" onclick="makeRequest('pos')">Part of Speech Tagging</button>
     </form>
-    
+
     <div id="resultBox"></div>
 
     <script>
@@ -70,30 +96,10 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('resultBox').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
-                scrollToTop();
+                document.getElementById('resultBox').innerText = JSON.stringify(data, null, 2);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             })
             .catch(error => console.error('Error:', error));
-        }
-
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function tokenize() {
-            makeRequest('tokenize');
-        }
-
-        function sentiment() {
-            makeRequest('sentiment');
-        }
-
-        function ner() {
-            makeRequest('ner');
-        }
-
-        function pos() {
-            makeRequest('pos');
         }
     </script>
 </body>

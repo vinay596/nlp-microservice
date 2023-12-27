@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
-from textblob import TextBlob
 import spacy
+from textblob import TextBlob
 
 app = Flask(__name__)
 CORS(app)
@@ -18,24 +18,12 @@ def tokenize():
     tokens = [token.text for token in doc]
     return jsonify({'tokens': tokens})
 
-def analyze_sentiment(text):
-    blob = TextBlob(text)
-    sentiment_polarity = blob.sentiment.polarity
-    sentiment_subjectivity = blob.sentiment.subjectivity
-    if sentiment_polarity > 0:
-        sentiment = 'positive'
-    elif sentiment_polarity < 0:
-        sentiment = 'negative'
-    else:
-        sentiment = 'neutral'
-
-    return sentiment, sentiment_polarity, sentiment_subjectivity
-
 @app.route('/sentiment', methods=['POST'])
 def sentiment():
     text = request.json['text']
-    sentiment_result, polarity, subjectivity = analyze_sentiment(text)
-    return jsonify({'sentiment': sentiment_result, 'polarity': polarity, 'subjectivity': subjectivity})
+    blob = TextBlob(text)
+    sentiment = 'positive' if blob.sentiment.polarity > 0 else 'negative' if blob.sentiment.polarity < 0 else 'neutral'
+    return jsonify({'sentiment': sentiment, 'polarity': blob.sentiment.polarity, 'subjectivity': blob.sentiment.subjectivity})
 
 @app.route('/ner', methods=['POST'])
 def named_entity_recognition():
