@@ -19,14 +19,9 @@ def tokenize():
     return jsonify({'tokens': tokens})
 
 def analyze_sentiment(text):
-    # Create a TextBlob object
     blob = TextBlob(text)
-    
-    # Get the sentiment polarity (-1 to 1) and subjectivity (0 to 1)
     sentiment_polarity = blob.sentiment.polarity
     sentiment_subjectivity = blob.sentiment.subjectivity
-
-    # Classify sentiment based on polarity
     if sentiment_polarity > 0:
         sentiment = 'positive'
     elif sentiment_polarity < 0:
